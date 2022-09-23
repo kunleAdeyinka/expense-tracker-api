@@ -1,5 +1,6 @@
 package io.wakandantechie.expensetrackerapi.service;
 
+import io.wakandantechie.expensetrackerapi.exceptions.ResourceNotFoundException;
 import io.wakandantechie.expensetrackerapi.model.Expense;
 import io.wakandantechie.expensetrackerapi.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,7 +28,7 @@ public class ExpenseServiceImpl implements ExpenseService{
         if(expense.isPresent()) {
             return expense.get();
         }
-        throw new RuntimeException("Expense is not found for the id " + id);
+        throw new ResourceNotFoundException("Expense is not found for the id " + id);
     }
 
     @Override
