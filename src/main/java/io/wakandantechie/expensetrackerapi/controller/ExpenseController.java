@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -44,4 +47,27 @@ public class ExpenseController {
         return expenseService.updateExpenseDetails(id, expense);
     }
 
+    @GetMapping("/expenses/category")
+    public List<Expense> getExpensesByCategory(@RequestParam String category, Pageable pageable) {
+        return expenseService.readByCategory(category, pageable);
+    }
+
+    @GetMapping("/expenses/name")
+    public List<Expense> getExpensesByName(@RequestParam String keyword, Pageable pageable) {
+        return expenseService.findByName(keyword, pageable);
+    }
+
+    @GetMapping("/expenses/date")
+    public List<Expense> getExpensesByDate(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            Pageable pageable) throws ParseException {
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDt = sdf1.parse(startDate);
+        Date endDt = sdf2.parse(endDate);
+
+        return expenseService.findByDateBetween(startDt, endDt, pageable);
+    }
 }
