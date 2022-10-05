@@ -1,5 +1,6 @@
 package io.wakandantechie.expensetrackerapi.controller;
 
+import io.wakandantechie.expensetrackerapi.exceptions.ResourceNotFoundException;
 import io.wakandantechie.expensetrackerapi.model.User;
 import io.wakandantechie.expensetrackerapi.model.UserModel;
 import io.wakandantechie.expensetrackerapi.service.UserService;
@@ -30,5 +31,11 @@ public class UserController {
     public ResponseEntity<User> update(@RequestBody User user, @PathVariable Long id) {
         User updateUser = userService.update(user, id);
         return new ResponseEntity<User>(updateUser, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) throws ResourceNotFoundException {
+        userService.delete(id);
+        return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 }
